@@ -21,60 +21,45 @@
                 v-model="typedAvatarUrl"
             >
         </div>
-        <div class="card mb-3">
-            <div class="row no-gutters">
-                <div class="col-md-4">
-                    <img
-                        :src="this.typedAvatarUrl ? this.typedAvatarUrl : 'https://via.placeholder.com/200'"
-                        class="card-img" alt="..."
-                    >
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 v-if="this.typedUsername" class="card-title">{{ this.typedUsername }}</h5>
-                        <h5 v-else class="card-title text-muted">Username</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <User :user='{username: typedUsername, avatar: typedAvatarUrl}' ></User>
+        <button type="submit" class="btn btn-primary" :disabled="waitRegister">Submit</button>
     </form>
 </template>
 
 <script>
+import Socket from '../lib/socket'
+import User from '../components/UserList/User'
+
 export default {
-    name: 'Login',
-    props: {
-        user: {}
-    },
     data: function() {
         return {
             errors: [],
+            waitRegister: false,
             typedUsername: null,
             typedAvatarUrl: null
         }
     },
     methods: {
         onSubmit: function() {
+            this.waitRegister = true
             const errors = []
-            if (this.typedUsername == null) {
-                errors.push('Username cannot be empty')
-            }
-            this.errors = errors
             
             const user = {
                 username: this.typedUsername,
                 avatar: this.typedAvatarUrl
             }
-            return user
-        }
+
+            Socket.userRegister(user)
+                .catch((e) => errors.push(e.message))
+                .finally(() => {
+                    this.errors = errors
+                    this.waitRegister = false
+                })
+        },
     },
-    created: function () {
-        if(this.user !== null) {
-            this.$router.push({ name: "chat"})
-        }
+    components: {
+        User
     }
-    
 }
 </script>
 
