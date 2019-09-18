@@ -1,9 +1,6 @@
 <template>
-    <div :class="{'border-primary' : message.user.username == myName }" class="card mb-1">
-        <div class="card-body" >
-            <p class="card-text">{{ message.text }}</p>
-            <p class="card-text"><small class="text-muted">à {{ date }} par {{ message.user.username }}</small></p>
-        </div>
+    <div :class="{'from-me': isFromMe, 'from-other': !isFromMe }" class="message">
+        {{ message.text }}
     </div>
 </template>
 
@@ -22,9 +19,23 @@ export default {
         date() {
             return moment(this.message.created).format('hh:mm')
         },
-        myName() {
-            return store.$data.user.username
+        isFromMe() {
+            return this.message.user.username == store.user.username
         }
     }
 }
 </script>
+
+<style lang="scss">
+.message {
+    display: inline-block;
+
+    &.from-me {
+        padding: 10px 10px;
+        text-align: right;
+        color: white;
+        background-color: var(--theme-color);
+        border-radius: 30px 30px 0 30px;
+    }
+}
+</style>

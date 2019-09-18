@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => {
         return record.meta.requiresAuth
     })
-    if(requiresAuth && !store.$data.isRegistered) {
+    if(requiresAuth && !store.isRegistered) {
         next('/login')
     } else {
         next()

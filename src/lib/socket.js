@@ -21,19 +21,24 @@ export default class Socket {
         Socket.IO = io(Socket.SERVER)
 
         Socket.IO.on(Socket.MESSAGE_UPDATE, (messages) => {
-            store.$data.messages = messages
+            store.messages = messages
         })
 
         Socket.IO.on(Socket.RECEIVE_MESSAGE, ({message}) => {
-            store.$data.messages.push(message)
+            store.messages.push(message)
         })
         
         Socket.IO.on(Socket.USER_TYPING, (data) => {
-            store.$data.userTyping = data
+            store.userTyping = data
         })
 
-        Socket.IO.on(Socket.USER_UPDATE, ({users}) => {
-            store.$data.users = users
+        Socket.IO.on(Socket.USER_UPDATE, ({users, type, user}) => {
+            if (store.users.length == 0) store.users = users
+            else if (type == 'join') store.users.push(user)
+            else if (type == 'left') {
+                const index = store.users.reduce((a, c, i) => c.username == user.username ? i : a, -1)
+                if (index != -1) store.users.splice(index, 1)
+            }
         })
     }
 
@@ -48,15 +53,19 @@ export default class Socket {
         const io = Socket.getIO()
         io.emit(Socket.USER_REGISTER, user)
         return new Promise((resolve, reject) => {
+            let resolved = false
             io.on(Socket.REGISTER_CONFIRMATION, () => {
+                if (resolved) return
                 sessionStorage.setItem('user', JSON.stringify(user))
-                store.$data.user = user
-                store.$data.isRegistered = true
-                resolve
+                store.user = user
+                store.isRegistered = true
+                resolve()
+                resolved = true
             })
             io.on(Socket.ERROR, (error) => {
-                if (error.code < 200 && error.code >= 100) {
+                if (error.code < 200 && error.code >= 100 && !resolved) {
                     reject(error)
+                    resolved = true
                 }
             })
         })
@@ -64,21 +73,32 @@ export default class Socket {
 
     static registerFromSession() {
         const user = JSON.parse(sessionStorage.getItem('user'))
-        if (user) {
-            this.userRegister(user)
-        }
+        if (user) this.userRegister(user)
     }
 
     static sendMessage(text) {
         const io = Socket.getIO()
         io.emit(Socket.SEND_MESSAGE, text)
         return new Promise((resolve, reject) => {
-            io.on(Socket.RECEIVE_MESSAGE, ({message: {receivedText}}) => {
-                if (text == receivedText) resolve()
+            let resolved = false
+            io.on(Socket.RECEIVE_MESSAGE, ({message}) => {
+                if (text == message.text && !resolved) {
+                    resolve()
+                    resolved = true
+                }
             })
             io.on(Socket.ERROR, (error) => {
-                if (error.code >= 200) reject(error)
+                if (error.code >= 200 && !resolved) {
+                    reject(error)
+                    resolved = true
+                }
             })
         })
+    }
+
+    static logout() {
+        sessionStorage.clear()
+        store.user = null
+        store.isRegistered = false
     }
 }

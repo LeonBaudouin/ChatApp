@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="user-list">
         <User v-for="(user, index) in users" :user="user" :key="index"></User>
     </div>
 </template>
@@ -14,8 +14,17 @@ export default {
     },
     computed: {
         users() {
-            return store.$data.users
+            return store.users
         }
     }
 }
 </script>
+
+<style lang="scss">
+.user-list {
+    padding: 30px;
+    border-right: 1px solid var(--theme-color);
+    height: 100%;
+    overflow-y: auto;
+}
+</style>

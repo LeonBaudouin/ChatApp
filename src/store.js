@@ -7,13 +7,14 @@ const store = new Vue({
             name: null,
             avatar: null
         },
-        users: [],
-        messages: [],
         isRegistered: false,
+        messages: [],
+        loadingMessage: null,
         userTyping: {
             typing: false,
             user: null
-        }
+        },
+        users: []
     },
     watch: {
         isRegistered() {

@@ -1,19 +1,10 @@
 <template>
-    <div class="card mb-3">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img
-                    :src="user.avatar ? user.avatar : 'https://via.placeholder.com/200'"
-                    class="card-img" alt="..."
-                >
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 v-if="user.username" class="card-title">{{ user.username }}</h5>
-                    <h5 v-else class="card-title text-muted">Username</h5>
-                </div>
-            </div>
-        </div>
+    <div class="user">
+        <img
+            :src="user.avatar ? user.avatar : 'https://via.placeholder.com/200'"
+            class="user-image" alt="..."
+        >
+        <span v-if="user.username" class="user-name">{{ user.username }}</span>
     </div>
 </template>
 
@@ -27,3 +18,27 @@ export default {
     }
 }
 </script>
+
+<style lang="scss">
+.user {
+    display: flex;
+
+    margin-bottom: 30px;
+    padding: 0 15px;
+
+    align-items: center;
+
+    &-image {
+        height: 75px;
+        width: 75px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    &-name {
+        font-weight: bold;
+        font-size: 1.5rem;
+        margin-left: 20px;
+    }
+}
+</style>

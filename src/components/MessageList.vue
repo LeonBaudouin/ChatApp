@@ -2,6 +2,7 @@
     <div class="message-list" ref="list" v-chat-scroll>
         <Message v-for="(message, index) in messages" :message='message' :key='index'></Message>
         <div v-if="isUserTyping" class="typing-hint">...</div>
+        <Message v-if="loadingMessage" :message='loadingMessage'></Message>
     </div>
 </template>
 
@@ -12,10 +13,13 @@ import store from '../store'
 export default {
     computed: {
         messages() {
-            return store.$data.messages
+            return store.messages
         },
         isUserTyping() {
-            return store.$data.userTyping.typing
+            return store.userTyping.typing
+        },
+        loadingMessage() {
+            return store.loadingMessage
         }
     },
     components: {
@@ -26,6 +30,8 @@ export default {
 
 <style lang="scss">
 .message-list {
-    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    padding: 0 100px;
 }
 </style>

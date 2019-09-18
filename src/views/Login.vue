@@ -64,15 +64,4 @@ export default {
 </script>
 
 <style lang="scss">
-.login-form {
-    margin: 50px auto 0 auto;
-    padding: 20px;
-
-    width: 40vw;
-    min-width: 300px;
-    max-width: 500px;
-    
-    border-radius: 5px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-}
 </style>

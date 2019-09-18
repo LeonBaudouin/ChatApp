@@ -1,9 +1,10 @@
 <template>
-    <div class="row chat">
-        <div class="col-3 user-list">
-            <UserList></UserList>
+    <div class="chat-page">
+        <div class="menu">
+
         </div>
-        <div class="col-9 message-space">
+        <UserList></UserList>
+        <div class="message-space">
             <MessageList></MessageList>
             <MessageBox></MessageBox>
         </div>
@@ -25,18 +26,13 @@ export default {
 </script>
 
 <style lang="scss">
-.chat {
-    height: 100vh;  
-}
-
-.user-list {
-    height: 100%;
-    overflow-y: scroll;
-}
-
-.message-space {
-    height: 100%;
+.chat-page {
+    height: 100vh;
     display: grid;
-    grid-template-rows: auto 70px;
+    grid-template-columns: minmax(300px, 25vw) minmax(300px, 25vw) auto;
+}
+.message-space {
+    display: grid;
+    grid-template-rows: auto 100px;
 }
 </style>
