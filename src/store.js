@@ -14,7 +14,8 @@ const store = new Vue({
             typing: false,
             user: null
         },
-        users: []
+        users: [],
+        userSearch: ''        
     },
     watch: {
         isRegistered() {

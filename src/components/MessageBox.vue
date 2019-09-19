@@ -1,7 +1,7 @@
 <template>
     <form class="message-box" @submit.prevent="onSubmit">
         <Smiley v-if="isSmileyOpen" @smiley='addText'></Smiley>
-        <div class="message-input-group">
+        <div class="text-input-area message-input-group">
             <button
                 type="button" class="button emoticon"
                 :class="{'open': isSmileyOpen}" @click="toggleSmiley"
@@ -68,7 +68,7 @@
                 </svg>
             </button>
             <input
-                type="text" class="message-input" placeholder="Message" aria-label="Message" 
+                type="text" class="text-input message-input" placeholder="Message" aria-label="Message" 
                 v-model="messageText" :class="{'is-invalid': this.error}" ref="input"
             >
             <button type="submit" class="submit button" :disabled="waitForSend">
@@ -154,11 +154,6 @@ export default {
 }
 
 .message-input-group {
-    padding: 10px;
-    border-radius: 50px;
-    background-color: #D9D9D9;
-    display: flex;
-    align-items: center;
 
     .button {
         line-height: 0;
@@ -208,13 +203,7 @@ export default {
     }
 
     .message-input {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.1rem;
-        width: 100%;
         margin: 0 16px;
-        border: none;
-        background: none;
-        outline: none;
     }
 
 }

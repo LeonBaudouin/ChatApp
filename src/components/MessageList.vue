@@ -22,6 +22,7 @@ import MessageGroup from './MessageList/MessageGroup'
 export default {
     computed: {
         messages() {
+            if (store.userSearch) return store.messages.filter(({user}) => user.username.toUpperCase().includes(store.userSearch.toUpperCase()))
             return store.messages
         },
         isUserTyping() {

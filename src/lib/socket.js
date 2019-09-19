@@ -10,7 +10,7 @@ export default class Socket {
     
     static REGISTER_CONFIRMATION = 'user registered'
     static RECEIVE_MESSAGE = 'message new'
-    static MESSAGES_UPDATE = 'messags update'
+    static MESSAGES_UPDATE = 'messages update'
     static ERROR = 'chat error'
     static USER_TYPING = 'user typing'
     static USER_UPDATE = 'users update'
@@ -21,12 +21,15 @@ export default class Socket {
         Socket.IO = io(Socket.SERVER)
 
         Socket.IO.on(Socket.MESSAGES_UPDATE, ({messages}) => {
-            console.log('Message update to fix')
             store.messages = messages.reduce((a, c) => {
-                if (a.length == 0) return a.push({user: c.user, messages: [c]})
+                if (a.length == 0) {
+                    a.push({user: c.user, messages: [c]})
+                    return a
+                }
                 if (a[a.length - 1].user.username == c.user.username) a[a.length - 1].messages.unshift(c)
-                else a.unshift({user: c.user, messages: [c]})
-            }).reverse()
+                else a.push({user: c.user, messages: [c]})
+                return a
+            }, []).reverse()
         })
 
         Socket.IO.on(Socket.RECEIVE_MESSAGE, ({message}) => {            
@@ -71,7 +74,6 @@ export default class Socket {
                 resolved = true
             })
             io.on(Socket.ERROR, (error) => {
-                console.log(error)
                 if (error.code < 200 && error.code >= 100 && !resolved) {
                     reject(error)
                     resolved = true
@@ -97,7 +99,6 @@ export default class Socket {
                 }
             })
             io.on(Socket.ERROR, (error) => {
-                console.log(error)
                 if (error.code >= 200 && !resolved) {
                     reject(error)
                     resolved = true
@@ -114,5 +115,7 @@ export default class Socket {
         sessionStorage.clear()
         store.user = null
         store.isRegistered = false
+        Socket.IO.disconnect()
+        Socket.Init()
     }
 }
