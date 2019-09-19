@@ -10,7 +10,7 @@ export default class Socket {
     
     static REGISTER_CONFIRMATION = 'user registered'
     static RECEIVE_MESSAGE = 'message new'
-    static MESSAGE_UPDATE = 'message update'
+    static MESSAGES_UPDATE = 'messags update'
     static ERROR = 'chat error'
     static USER_TYPING = 'user typing'
     static USER_UPDATE = 'users update'
@@ -20,16 +20,24 @@ export default class Socket {
     static Init() {
         Socket.IO = io(Socket.SERVER)
 
-        Socket.IO.on(Socket.MESSAGE_UPDATE, (messages) => {
-            store.messages = messages
+        Socket.IO.on(Socket.MESSAGES_UPDATE, ({messages}) => {
+            console.log('Message update to fix')
+            store.messages = messages.reduce((a, c) => {
+                if (a.length == 0) return a.push({user: c.user, messages: [c]})
+                if (a[a.length - 1].user.username == c.user.username) a[a.length - 1].messages.unshift(c)
+                else a.unshift({user: c.user, messages: [c]})
+            }).reverse()
         })
 
-        Socket.IO.on(Socket.RECEIVE_MESSAGE, ({message}) => {
-            store.messages.push(message)
+        Socket.IO.on(Socket.RECEIVE_MESSAGE, ({message}) => {            
+            if (store.messages.length == 0) return store.messages.unshift({user: message.user, messages: [message]})
+            if (store.messages[0].user.username == message.user.username) store.messages[0].messages.unshift(message)
+            else store.messages.unshift({user: message.user, messages: [message]})
         })
         
         Socket.IO.on(Socket.USER_TYPING, (data) => {
-            store.userTyping = data
+            if (data.user.username !== store.user.username)
+                store.userTyping = data
         })
 
         Socket.IO.on(Socket.USER_UPDATE, ({users, type, user}) => {
@@ -63,6 +71,7 @@ export default class Socket {
                 resolved = true
             })
             io.on(Socket.ERROR, (error) => {
+                console.log(error)
                 if (error.code < 200 && error.code >= 100 && !resolved) {
                     reject(error)
                     resolved = true
@@ -88,12 +97,17 @@ export default class Socket {
                 }
             })
             io.on(Socket.ERROR, (error) => {
+                console.log(error)
                 if (error.code >= 200 && !resolved) {
                     reject(error)
                     resolved = true
                 }
             })
         })
+    }
+
+    static sendTyping() {
+        Socket.IO.emit(Socket.USER_TYPING);
     }
 
     static logout() {

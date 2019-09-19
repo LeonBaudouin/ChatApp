@@ -23,8 +23,9 @@ export default {
 <style lang="scss">
 .user-list {
     padding: 30px;
-    border-right: 1px solid var(--theme-color);
     height: 100%;
     overflow-y: auto;
+    background-color: white;
+    border-radius: 0 30px 30px 0;
 }
 </style>

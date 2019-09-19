@@ -1,20 +1,22 @@
 <template>
     <div class="user">
-        <img
-            :src="user.avatar ? user.avatar : 'https://via.placeholder.com/200'"
-            class="user-image" alt="..."
-        >
+        <Avatar :user="user"></Avatar>
         <span v-if="user.username" class="user-name">{{ user.username }}</span>
     </div>
 </template>
 
 <script>
+import Avatar from './Avatar'
+
 export default {
     props: {
         user: {
             type: Object,
             required: true
         }
+    },
+    components: {
+        Avatar
     }
 }
 </script>
@@ -28,15 +30,8 @@ export default {
 
     align-items: center;
 
-    &-image {
-        height: 75px;
-        width: 75px;
-        border-radius: 50%;
-        object-fit: cover;
-    }
 
     &-name {
-        font-weight: bold;
         font-size: 1.5rem;
         margin-left: 20px;
     }

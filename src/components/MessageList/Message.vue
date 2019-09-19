@@ -1,26 +1,16 @@
 <template>
-    <div :class="{'from-me': isFromMe, 'from-other': !isFromMe }" class="message">
-        {{ message.text }}
+    <div class="message" >
+        <p class="message-text">{{ message.text }}</p>
     </div>
 </template>
 
 <script>
-import moment from 'moment'
-import store from '../../store'
-
 export default {
     props: {
+        isLoading: Boolean,
         message: {
             type: Object,
             required: true
-        }
-    },
-    computed: {
-        date() {
-            return moment(this.message.created).format('hh:mm')
-        },
-        isFromMe() {
-            return this.message.user.username == store.user.username
         }
     }
 }
@@ -29,13 +19,33 @@ export default {
 <style lang="scss">
 .message {
     display: inline-block;
+    padding: 10px 20px;
+    max-width: 75%;
+    margin-bottom: 5px;
+    position: relative;
 
-    &.from-me {
-        padding: 10px 10px;
-        text-align: right;
-        color: white;
+    &-text {
+        overflow-wrap: break-word;
+        margin: 0;
+    }
+
+    .from-me & {
+
+        align-self: flex-end;
         background-color: var(--theme-color);
-        border-radius: 30px 30px 0 30px;
+        border-radius: 50px 50px 0 50px;
+        text-align: right;
+
+        .message-text {
+            color: white;
+        }
+    }
+
+    .from-other & {
+        
+        align-self: flex-start;
+        background-color: #D9D9D9;
+        border-radius: 50px 50px 50px 0;
     }
 }
 </style>

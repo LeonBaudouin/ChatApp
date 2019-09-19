@@ -1,6 +1,7 @@
 <template>
     <div class="smiley">
         <span 
+            class="add-smiley"
             v-for="(smiley, index) in smileys" :key="index"
             @click="$emit('smiley', String.fromCodePoint(smiley))"
         >
@@ -23,4 +24,22 @@ export default {
 </script>
 
 <style lang="scss">
+.smiley {
+    line-height: 1.5;
+    padding: 20px;
+    background-color: #D9D9D9;
+    border-radius: 20px;
+    font-size: 1.5rem;
+    position: absolute;
+    bottom: 100%;
+}
+.add-smiley {
+    cursor: pointer;
+    display: inline-block;
+    user-select: none;
+
+    &:hover {
+        filter: brightness(0.8);
+    }
+}
 </style>
