@@ -11,6 +11,7 @@ export default {
     created: function() {
         Socket.Init()
         Socket.registerFromSession()
+        document.documentElement.style.setProperty('--theme-color', sessionStorage.getItem('theme-color'));
     }
 }
 </script>
@@ -27,7 +28,7 @@ export default {
 }
 
 .text-input-area {
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 50px;
     background-color: #D9D9D9;
     display: flex;
@@ -42,8 +43,10 @@ body {
     box-sizing: border-box;
 }
 
-#app {
+:root {
     --theme-color: #2B00FF;
+}
+#app {
     font-family: 'Roboto', sans-serif;
     line-height: 1.3;
     -webkit-font-smoothing: antialiased;

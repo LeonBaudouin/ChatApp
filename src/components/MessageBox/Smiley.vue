@@ -25,6 +25,7 @@ export default {
 
 <style lang="scss">
 .smiley {
+    z-index: 10;
     line-height: 1.5;
     padding: 20px;
     background-color: #D9D9D9;

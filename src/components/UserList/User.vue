@@ -1,6 +1,6 @@
 <template>
     <div class="user">
-        <Avatar :user="user"></Avatar>
+        <Avatar :user="user" class="user-list-avatar"></Avatar>
         <span v-if="user.username" class="user-name">{{ user.username }}</span>
     </div>
 </template>
@@ -29,6 +29,10 @@ export default {
     padding: 0 15px;
 
     align-items: center;
+
+    &-list-avatar {
+        flex-shrink: 0;
+    }
 
 
     &-name {

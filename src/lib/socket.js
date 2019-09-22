@@ -112,7 +112,7 @@ export default class Socket {
     }
 
     static logout() {
-        sessionStorage.clear()
+        sessionStorage.setItem('user', null)
         store.user = null
         store.isRegistered = false
         Socket.IO.disconnect()

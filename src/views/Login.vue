@@ -1,6 +1,6 @@
 <template>
     <div class="login-page">
-        <h1 class="site-title">Robot <img src="robot.svg" alt="logo" class="logo"> Chat</h1>
+        <h1 class="site-title">Robot <img src="svg/robot.svg" alt="logo" class="logo"> Chat</h1>
         <form class="login-form" @submit.prevent="onSubmit">
             <div class="text-input-area login-input-area input-username-area">
                 <div v-if="error" class="error" >
@@ -128,6 +128,9 @@ export default {
         }
     }
 
+    .input-username, .input-avatar {
+        padding: 10px 20px;
+    }
 }
 
 .site-title {

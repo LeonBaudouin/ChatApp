@@ -1,7 +1,7 @@
 <template>
-    <span class="user-image">
+    <span class="user-image" @click="onClick">
         <img
-            :src="showImage ? user.avatar : 'motif1.svg'"
+            :src="getImage"
             :alt="'Avatar de ' + user.username"
             @error="imageNotFound"
         >
@@ -9,6 +9,10 @@
 </template>
 
 <script>
+import store from '../../store'
+
+const IMAGES = ['svg/motif1.svg','svg/motif2.svg','svg/motif3.svg']
+
 export default {
     props: {
         user: Object
@@ -19,8 +23,12 @@ export default {
         }
     },
     computed: {
-        showImage() {
-            return !!this.user.avatar && this.isImageFound
+        getImage() {
+            if (!!this.user.avatar && this.isImageFound) {
+                return this.user.avatar
+            }
+            if (!this.user.username) return IMAGES[0]
+            return IMAGES[this.user.username.charCodeAt(0) % 3]
         }
     },
     watch: {
@@ -34,6 +42,9 @@ export default {
     methods: {
         imageNotFound() {
             this.isImageFound = false
+        },
+        onClick() {
+            store.avatarClick = this.user.username
         }
     }
 }
@@ -54,6 +65,8 @@ export default {
         width: 85%;
         height: 85%;
         border-radius: 50%;
+        background-color: var(--theme-color);
+        filter: brightness(1.2);
     }
 
     &:hover {

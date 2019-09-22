@@ -19,7 +19,7 @@
                 <a href="#" class="tab-link" @click.prevent="logout">Déconnexion</a>
             </h2>
         </div>
-        <img src="logo.svg" alt="Logo" class="logo">
+        <img src="svg/logo.svg" alt="Logo" class="logo">
     </div>
 </template>
 
@@ -60,8 +60,10 @@ export default {
 }
 
 .my-user {
+    margin: 0 20px;
     display: inline-block;
     color: white;
+    
     .user-image {
         width: 100px;
         height: 100px;
@@ -70,7 +72,9 @@ export default {
     &name {
         font-weight: 400;
         margin: 0 0 5px 20px;
+        font-size: 1.7rem;
         display: inline-block;
+        overflow-wrap: break-word;
     }
 }
 

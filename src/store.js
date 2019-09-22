@@ -15,7 +15,9 @@ const store = new Vue({
             user: null
         },
         users: [],
-        userSearch: ''        
+        userSearch: '',
+        avatarClick: null,
+        avatarClickCb: null
     },
     watch: {
         isRegistered() {
@@ -23,6 +25,12 @@ const store = new Vue({
                 router.push({name: 'chat'})
             } else {
                 router.push({name: 'login'})
+            }
+        },
+        avatarClick() {
+            if (this.avatarClick && this.avatarClickCb) {
+                this.avatarClickCb(this.avatarClick)
+                this.avatarClick = null
             }
         }
     },

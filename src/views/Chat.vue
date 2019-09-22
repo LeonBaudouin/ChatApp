@@ -1,10 +1,11 @@
 <template>
     <div class="chat-page">
         <Menu></Menu>
-        <UserList></UserList>
+        <UserList/>
         <div class="message-space">
-            <MessageList></MessageList>
-            <MessageBox></MessageBox>
+            <ChangeColor/>
+            <MessageList/>
+            <MessageBox/>
         </div>
     </div>
 </template>
@@ -13,6 +14,7 @@
 import UserList from '../components/UserList'
 import MessageBox from '../components/MessageBox'
 import MessageList from '../components/MessageList'
+import ChangeColor from '../components/ChangeColor'
 import Menu from '../components/Menu'
 
 export default {
@@ -20,7 +22,8 @@ export default {
         UserList,
         MessageBox,
         MessageList,
-        Menu
+        Menu,
+        ChangeColor
     }
 }
 </script>

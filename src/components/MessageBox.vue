@@ -98,6 +98,9 @@ export default {
             isSmileyOpen: false
         }
     },
+    created() {
+        store.avatarClickCb = this.addText
+    },
     watch: {
         messageText() {
             this.error = null

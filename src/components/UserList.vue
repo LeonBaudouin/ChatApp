@@ -46,6 +46,7 @@ export default {
     padding: 30px 40px 30px 30px;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     background-color: white;
     border-radius: 0 30px 30px 0;
 }
